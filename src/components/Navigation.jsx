@@ -36,21 +36,25 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (href) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setIsOpen(false);
-    }
+  const scrollToSection = (e, href) => {
+    e.preventDefault();
+    setIsOpen(false);
+    // Small delay lets menu close animation start before scroll
+    setTimeout(() => {
+      const element = document.querySelector(href);
+      if (element) {
+        const top = element.getBoundingClientRect().top + window.scrollY - 64;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    }, 50);
   };
 
   return (
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'glass-effect shadow-lg' : 'bg-transparent'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'glass-effect shadow-lg' : 'bg-transparent'
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
@@ -63,10 +67,7 @@ const Navigation = () => {
           >
             <a
               href="#home"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection('#home');
-              }}
+              onClick={(e) => scrollToSection(e, '#home')}
               className="text-2xl font-bold gradient-text hover:opacity-80 transition-opacity"
             >
               BG
@@ -85,18 +86,14 @@ const Navigation = () => {
                 <motion.a
                   key={link.name}
                   href={link.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection(link.href);
-                  }}
+                  onClick={(e) => scrollToSection(e, link.href)}
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 + index * 0.1 }}
-                  className={`relative px-3 py-2 text-sm font-medium transition-colors ${
-                    activeSection === link.href.substring(1)
+                  className={`relative px-3 py-2 text-sm font-medium transition-colors ${activeSection === link.href.substring(1)
                       ? 'text-cyan-400'
                       : 'text-slate-300 hover:text-cyan-400'
-                  }`}
+                    }`}
                 >
                   {link.name}
                   {activeSection === link.href.substring(1) && (
@@ -145,18 +142,14 @@ const Navigation = () => {
                 <motion.a
                   key={link.name}
                   href={link.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection(link.href);
-                  }}
+                  onClick={(e) => scrollToSection(e, link.href)}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  className={`block px-4 py-2 rounded-lg text-base font-medium transition-colors ${
-                    activeSection === link.href.substring(1)
+                  className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors touch-manipulation ${activeSection === link.href.substring(1)
                       ? 'text-cyan-400 bg-slate-800/50'
                       : 'text-slate-300 hover:text-cyan-400 hover:bg-slate-800/30'
-                  }`}
+                    }`}
                 >
                   {link.name}
                 </motion.a>
