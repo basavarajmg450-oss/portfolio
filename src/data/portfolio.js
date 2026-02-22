@@ -14,14 +14,7 @@ export const personalInfo = {
     institution: "Canara Engineering College, Bantwal, Mangalore",
     year: "2023 - 2027"
   },
-  internships: [
-    {
-      company: "Skolar",
-      role: "Full Stack Developer Intern",
-      period: "June 2024 - Present",
-      description: "Working on full-stack development projects using MERN stack"
-    }
-  ]
+  internships: []
 };
 
 export const skills = {
